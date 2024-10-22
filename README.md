@@ -1,2 +1,2 @@
-# RKT_Tokamak
-Welcome to the RKT Tokamak Code, by Kieran Reising, Joe Roll and Miles Testa
+# RRT_Tokamak
+Welcome to the RRT Tokamak Code, by Kieran Reising, Joe Roll and Miles Testa
