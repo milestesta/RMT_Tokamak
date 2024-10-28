@@ -339,13 +339,13 @@ class RRT_Tokamak(object):
         computational_grid = np.zeros((Zdim, Rdim), float) #flux at all grid points
 
         if self.just_plasma is False: #If analyzing the entire R-Z space
-            for i in range(0, Rdim): #prange paralellizes for loop
+            for i in prange(0, Rdim): #prange paralellizes for loop
                 R = majR + (i - (Rdim/2.0))*dR
                 for j in range(0, Zdim): 
                     Z = (j - (Zdim/2.0))*dZ
                     computational_grid[j][i] = self._field_due_to_all_poles(R,Z,Anm,MPC) + self._plasma_flux(R, Z, plasma_grid_arr)
         else: #If analyzing the just plasma space
-            for pt in range(0, plasma_grid_arr.shape[0]):
+            for pt in prange(0, plasma_grid_arr.shape[0]):
                 #Defines point
                 R,Z = plasma_grid_arr[pt]
                 i,j = plasma_grid_arr_inds[pt].astype(int32)
