@@ -47,9 +47,9 @@ class RRT_Tokamak(object):
         Rdim (int): number of points to sample in radial direction
         Zdim (int): number of points to sample in z direction
         N_poles (int): Order to which you expand the multipole 
-            aproximation to the actual contribution from the coils. 
-        sim_width (float): (simulation width) range of R values to sample
-        sim_height (float): (simulation height) range of Z values to sample
+            approximation to the actual contribution from the coils. 
+        sim_width (float): (simulation width) range of R values to sample in meters
+        sim_height (float): (simulation height) range of Z values to sample in meters
         just_plasma (boolean): True only analyzes within LCFS, False analyses entire space 
     """
 
@@ -354,54 +354,29 @@ class RRT_Tokamak(object):
 
         return computational_grid
 
-R_0 = 1
-N_R = 500
-N_Z = 500
-simulation_width = 0.3
-simulation_height = 0.3
+def psi_output(grid,fname='psi_grid.dat'):
+    """
+    This outputs the raw psi data on the r,z grid.
 
-timing_start = timer()
+    Parameters:
+        grid (array,float): this is the standard output of RRT_Tokamak.compute_psi()
+        fname (string): this denotes the name of the output file to write to
+    """
 
-model = RRT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z,sim_width=simulation_width,
-                            sim_height=simulation_height,just_plasma=True)
-psi = model.compute_psi()
+    if grid.ndim != 2:
+        raise ValueError('Error: input for psi_output() is not 2 dimensional)
 
-psi_lcfs = model.miller_surface()
-min_psi = np.min(psi)
-max_psi = np.max(psi)
-
-timing_end = timer()
-print(f'Time to complete run: {timing_end-timing_start} seconds')
-
-########## Makes plots ##########
-center_cut = np.zeros(N_R)
-
-dR = simulation_width/N_R
-R_array = np.zeros(N_R)
-for i in range(0, N_R):
-    R_array[i] = R_0 + (i - (N_R/2.0))*dR
-
-dZ = simulation_height/N_Z      
-Z_array = np.zeros(N_Z)
-for j in range(0, N_Z):
-    Z_array[j] = (j - (N_Z/2.0))*dZ 
-
-center_cut_index = int(N_Z/2)
-for i in range(0, N_R):
-    center_cut[i] = psi[center_cut_index][i]
-
-plt.plot(R_array, center_cut)
-
-fig, ax = plt.subplots()
-
-n_contours = 10
-dPsi = (max_psi - min_psi)/n_contours
-Levels = [psi_lcfs]
-
-for n in range(0, n_contours):
-    Levels.append(min_psi+ dPsi*n)
-Levels.sort()
-
-CS = ax.contour(R_array, Z_array, psi, levels = np.linspace(min_psi, max_psi, 40))
-#ax.clabel(CS, inline=True, fontsize=4
-plt.show()
+    with open(fname, "w") as output:
+        output.write('r = R + (r_ind - rdim/2)*(sim_width/rdim)\n')
+        output.write('z = (z_ind - zdim/2)*(sim_height/zdim)\n')
+        output.write('\n')
+        output.write(f'Number of r points: {grid.shape[1]}\n')
+        output.write(f'Number of z points: {grid.shape[0]}\n')
+        output.write('\n')
+        output.write(' r_ind  z_ind         psi\n')
+        for zind in range(grid.shape[0]):
+            for rind in range(grid.shape[1]):
+                if grid[zind][rind] < 1e-8:
+                    continue #skips printing grid value if it is zero
+                else:
+                    output.write('{:^6} {:^6}    {:8.10f}\n'.format(rind,zind,grid[zind][rind]))
