@@ -1,0 +1,76 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.special
+import scipy.constants
+
+def GS_finite_diff(psi_grid, Rmin, Rmax, Zmin, Zmax, Rdim, Zdim):
+    """This function uses finite differences to make sure that the psi value that the main code produces
+    does actually solve the GS equation for our inputted plasma current. 
+
+    Args:
+        psi_grid (float array [Z][R]): contains the GS solution from compute_psi.
+        Rmin (float): The leftmost R point of the simulation box. 
+        Rmax (float): The rightmost R point of the simulation box. 
+        Zmin (float): The lowest Z point of the simulation box. 
+        Zmax (float): The highest Z point of the simulation box. 
+        Rdim (int): The number of R points.
+        Zdim (int): The number of Z points.
+    
+    Returns:
+        An array containing the finite differences version of the GS operator applied to psi_grid. Should be equal to -mu_0 R j_plasma.   
+    """
+    #Defines local variables to avoid calling object so much
+
+
+    
+    R_array = np.linspace(Rmin, Rmax, Rdim)
+    final_grid = np.zeros((Zdim, Rdim), float)
+    dR = (Rmax - Rmin)/Rdim
+    dZ = (Zmax - Zmin)/Zdim
+    
+
+    
+    #gs_operator = np.zeros((Zdim, Rdim), float) #contains the evaluation of the GS operator at each gridpoint. 
+    
+    #padding the outer rim of the gs_operator array  with zeros so I can vectorise the GS evaluation. Since the 
+    #finite difference form of the GS operator only requires the r=1 von neumann neighborhood of each point, we
+    #just need one layer of padding. 
+    
+      #padded_gs_operator = np.pad(psi_grid, 1) #numba hates this so I had to implement this by hand.
+    
+    #Building up the stencils that we'll need:
+    
+    psi_ip1_j = np.zeros((Zdim+2, Rdim+2), float)
+    psi_ip1_j[1:-1, 2:] = np.copy(psi_grid) 
+    
+    psi_im1_j = np.zeros((Zdim+2, Rdim+2), float)
+    psi_im1_j[1:-1, :-2] = np.copy(psi_grid) 
+        
+    psi_i_jp1 = np.zeros((Zdim+2, Rdim+2), float)
+    psi_i_jp1[:-2, 1:-1] = np.copy(psi_grid)
+        
+    psi_i_jm1 = np.zeros((Zdim+2, Rdim+2), float)
+    psi_i_jm1[2:, 1:-1] = np.copy(psi_grid)
+    
+    psi_i_j = np.zeros((Zdim+2, Rdim+2), float)
+    psi_i_j[1:-1, 1:-1] = np.copy(psi_grid)  
+    
+    #An array holding 1/R, needed for vectorised finite difference equation.
+    # R_inv_row = np.array([(self.majR - (self.sim_width/2.0)) + dR*i for i in range(0, self.Rdim)])
+    R_inv_matrix = np.zeros((Zdim, Rdim), float) #This was vectorised, but numba decided to throw a fit. 
+    for j in range(0, Zdim):
+        for i in range(0, Rdim):
+            R_inv_matrix[j,i] = 1/R_array[i]
+    # R_inv_matrix = R_inv_row.repeat(self.Zdim).reshape((-1, self.Zdim)).T
+    R_inv_array = np.zeros((Zdim+2, Rdim+2), float)
+    R_inv_array[1:-1, 1:-1] = R_inv_matrix
+
+    #Now we can just add the matrices as dictated by the finite differences formula, trimming off the edges at 
+    #the end. 
+    
+    padded_gs_operator = (((psi_ip1_j - (2*psi_i_j) + psi_im1_j)/(dR*dR)) + ((R_inv_array*(psi_ip1_j - psi_im1_j))/(2*dR)) + ((psi_i_jp1 - (2*psi_i_j) + psi_i_jm1)/(dZ*dZ)))
+    
+    #we can now strip away the added rim. 
+    gs_operator = padded_gs_operator[1:-1, 1:-1]
+    print(gs_operator)
+    return(gs_operator)
