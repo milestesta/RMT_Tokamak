@@ -1,5 +1,0 @@
-def write_psi(self, file_name = "miller_gs_solution"):
-    with open(file_name, "w") as f:
-        for k in range(0, N_Z):
-            for i in range(0, N_R):
-                f.write(str(psi[k, i]) + " ")
