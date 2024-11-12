@@ -364,7 +364,7 @@ def psi_output(grid,fname='psi_grid.dat'):
     """
 
     if grid.ndim != 2:
-        raise ValueError('Error: input for psi_output() is not 2 dimensional)
+        raise ValueError('Error: input for psi_output() is not 2 dimensional')
 
     with open(fname, "w") as output:
         output.write('r = R + (r_ind - rdim/2)*(sim_width/rdim)\n')
