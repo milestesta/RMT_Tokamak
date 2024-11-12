@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.special
 import scipy.constants
 
-def GS_finite_diff(psi_grid, Rmin, Rmax, Zmin, Zmax, Rdim, Zdim):
+def GS_finite_diff(psi, Rmin, Rmax, Zmin, Zmax, Rdim, Zdim):
     """This function uses finite differences to make sure that the psi value that the main code produces
     does actually solve the GS equation for our inputted plasma current. 
 
