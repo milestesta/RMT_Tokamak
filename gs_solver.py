@@ -5,7 +5,6 @@ import scipy.constants
 from numba import int32,float32,boolean
 from numba import prange
 from numba.experimental import jitclass
-from timeit import default_timer as timer
 
 #Establishes constants
 pi = np.pi
@@ -47,9 +46,9 @@ class RRT_Tokamak(object):
         Rdim (int): number of points to sample in radial direction
         Zdim (int): number of points to sample in z direction
         N_poles (int): Order to which you expand the multipole 
-            approximation to the actual contribution from the coils. 
-        sim_width (float): (simulation width) range of R values to sample in meters
-        sim_height (float): (simulation height) range of Z values to sample in meters
+            aproximation to the actual contribution from the coils. 
+        sim_width (float): (simulation width) range of R values to sample
+        sim_height (float): (simulation height) range of Z values to sample
         just_plasma (boolean): True only analyzes within LCFS, False analyses entire space 
     """
 
@@ -353,6 +352,79 @@ class RRT_Tokamak(object):
                 computational_grid[j][i] = self._field_due_to_all_poles(R,Z,Anm,MPC) + self._plasma_flux(R, Z, plasma_grid_arr)
 
         return computational_grid
+    
+    @staticmethod
+    def _D(grid,dir,dir_delta):
+        """
+        Computes the first derivative. https://en.wikipedia.org/wiki/Finite_difference_coefficient#
+
+        Parameters:
+            grid (array,float): this is what we will be differentiating
+            dir (int): this is the direction we will differentiate (which axis). 0=row and 1=col
+            dir_delta (float): this is the spacing between points in our desired differentiation direction
+
+        Returns:
+            der (array,float): this is the first derivative
+        """
+
+        if dir not in [0,1]: 
+            raise ValueError(f'Direction for derivative must be 0 (row) or 1 (col)')
+        
+        der = np.empty(grid.shape) # will store our derivative
+
+        if dir==0: # Derivative along the row
+            for row in range(grid.shape[0]):
+                for col in range(grid.shape[1]):
+                    if col in [0,1]: # first two columns (forward derivative)
+                        der[row][col] = (-11/6*grid[row][col] + 3*grid[row][col] - 3/2*grid[row][col] + 1/3*grid[row][col])/dir_delta
+                    elif col in [grid.shape[1]-2,grid.shape[1]-1]: # last two columns (backward derivative)
+                        der[row][col] = (-1/3*grid[row][col-3] + 3/2*grid[row][col-2] - 3*grid[row][col-1] + 11/6*grid[row][col])/dir_delta
+                    else: # middle (full 5-pt-derivative)
+                        der[row][col] = (1/12*grid[row][col-2] - 2/3*grid[row][col-1] + 2/3*grid[row][col+1] - 1/12*grid[row][col+2])/dir_delta
+        elif dir==1: # Derivative along the column
+            for row in range(grid.shape[0]):
+                for col in range(grid.shape[1]):
+                    if row in [0,1]: # first two columns (forward derivative)
+                        der[row][col] = (-11/6*grid[row][col] + 3*grid[row+1][col] - 3/2*grid[row+2][col] + 1/3*grid[row+3][col])/dir_delta
+                    elif row in [grid.shape[0]-2,grid.shape[0]-1]: # last two columns (backward derivative)
+                        der[row][col] = (-1/3*grid[row-3][col] + 3/2*grid[row-2][col] - 3*grid[row-1][col] + 11/6*grid[row][col])/dir_delta
+                    else: # middle (full 5-pt-derivative)
+                        der[row][col] = (1/12*grid[row-2][col] - 2/3*grid[row-1][col] + 2/3*grid[row+1][col] - 1/12*grid[row+2][col])/dir_delta
+        
+        return der
+
+    def compute_B(self,psi_grid):
+        """
+        Computes the r and z components of our magnetic field (Vector field) determined by
+            Bz = +(1/R) * d(psi)/dr
+            Br = -(1/R) * d(psi)/dz
+
+        Parameters:
+            psi_grid (array,float): this is the standard output of compute_psi
+
+        Returns:
+            Bz (array,float): this is the z-component of the magnetic field at psi[z][r]
+            Br (array,float): this is the r-component of the magnetic field at psi[z][r]
+        """
+
+        #Defines local variables to avoid calling object so much
+        R = self.majR
+        sim_height = self.sim_height
+        sim_width = self.sim_width
+        Rdim = self.Rdim
+        Zdim = self.Zdim
+
+        # Computes first derivatives
+        # psi[z][r]
+        dZ = sim_height/Zdim
+        Dz_psi = self._D(psi_grid,dir=1,dir_delta=dZ)
+        dR = sim_width/Rdim
+        Dr_psi = self._D(psi_grid,dir=0,dir_delta=dR)
+
+        Bz =  (1/R)*Dr_psi # z component of magnetic field
+        Br = -(1/R)*Dz_psi # r component of magnetic field
+
+        return Bz,Br
 
 def psi_output(grid,fname='psi_grid.dat'):
     """
