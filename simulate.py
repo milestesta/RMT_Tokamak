@@ -56,10 +56,8 @@ def simulate(model,x0,v0,dt,tsteps):
 
         # Acceleration for current timestep [phi][z][r]
         # Lorentz force law: F = -(-q)* np.cross(v,B)
-        aphi = -(vcurr[2]*Bz[zind][rind] - vcurr[1]*Br[zind][rind])
-        az = vcurr[2]*Bphi - vcurr[0]*Br[zind][rind]
-        ar = vcurr[0]*Bz[zind][rind] - vcurr[1]*Bphi
-        a = np.array([aphi,az,ar])*500
+        B = [Bphi,Bz[zind][rind],Br[zind,rind]]
+        a = 500*np.cross(vcurr,B)
 
         # Calculates next timestep (Newton's second law)
         xt[ii+1] = xt[ii] + vcurr*dt + 0.5*a*dt**2
