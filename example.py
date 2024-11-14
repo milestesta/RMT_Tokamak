@@ -45,16 +45,15 @@ fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(12,4),dpi=100)
 
 # Plots central cut of psi
 
-ax[0].set_title(r'Center cut along $z=0$')
-ax[0].set_ylabel(r'$\psi$')
-ax[0].set_xlabel('r [m]')
-
 center_cut = np.zeros(N_R)
 center_cut_index = int(N_Z/2)
 
 for i in range(0, N_R):
     center_cut[i] = psi[center_cut_index][i]
 
+ax[0].set_title(r'Center cut along $z=0$')
+ax[0].set_ylabel(r'$\psi$')
+ax[0].set_xlabel('r [m]')
 ax[0].plot(R_array, center_cut)
 
 # Plots constant psi contours on our grid
