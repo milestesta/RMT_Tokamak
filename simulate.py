@@ -11,7 +11,7 @@ def simulate(model,x0,v0,dt,tsteps):
     Parameters:
         model (class): initialized class for RRT_tokamak
         x0 (float,3): initial position [phi][z][r]
-        v0 (float): initial velocity [phi][z][r]
+        v0 (float): initial linear velocity [phi][z][r]
         dt (float): time step
         tsteps (int): number of time steps
 
@@ -39,14 +39,17 @@ def simulate(model,x0,v0,dt,tsteps):
     # Calculates the magnetic field at each point
     psi = model.compute_psi()
     Bz,Br = model.compute_B(psi)
-    Bphi = 0.0007 # about the average magnitude for each component
+    Bphi = 0.0007*100 # should be 10-100x higher magnitude than that of Bz and Br (0.0007)
 
     # Initializes output vector
     xt = np.zeros((tsteps+1,3)) # +1 to not count start as a timestep
     xt[0] = x0
 
-    # Iterates over all time steps
+    # Converts input linear velicity to angular velocity for phi
     vcurr = np.array(v0)
+    vcurr[0] = vcurr[0]/model.majR
+
+    # Iterates over all time steps
     for ii in range(tsteps):
 
         # Converts position at current timstep to indices
@@ -57,7 +60,7 @@ def simulate(model,x0,v0,dt,tsteps):
         # Acceleration for current timestep [phi][z][r]
         # Lorentz force law: F = -(-q)* np.cross(v,B)
         B = [Bphi,Bz[zind][rind],Br[zind,rind]]
-        a = 500*np.cross(vcurr,B)
+        a = -np.cross(vcurr,B)
 
         # Calculates next timestep (Newton's second law)
         xt[ii+1] = xt[ii] + vcurr*dt + 0.5*a*dt**2
