@@ -25,7 +25,7 @@ print('Psi calculation complete',flush=True)
 
 print('Starting simulation',flush=True)
 
-xt = simulate(model,x0=[0.0,0.0,1.01],v0=[0.0,0.01,0.01],dt=0.001,tsteps=60000)
+xt = simulate(model,x0=[0.0,0.0,1.01],v0=[5.0,0.01,0.00],dt=0.001,tsteps=120000)
 
 print('Simulation complete',flush=True)
 
@@ -40,6 +40,16 @@ dZ = simulation_height/N_Z
 Z_array = np.zeros(N_Z)
 for j in range(0, N_Z):
     Z_array[j] = (j - (N_Z/2.0))*dZ 
+
+# Plots phi component of the simulation
+fig,ax = plt.subplots()
+phi = []
+for angle in range(xt.shape[0]):
+    phi.append(np.mod(xt[angle][0],2*np.pi))
+
+ax.set_xlabel('time series')
+ax.set_ylabel(r'$\phi$ (radians)')
+ax.plot(np.linspace(0,1,xt.shape[0]),phi)
 
 fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(12,4),dpi=100)
 
