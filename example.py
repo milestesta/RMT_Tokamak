@@ -42,6 +42,7 @@ for j in range(0, N_Z):
     Z_array[j] = (j - (N_Z/2.0))*dZ 
 
 # Plots phi component of the simulation
+
 fig,ax = plt.subplots()
 phi = []
 for angle in range(xt.shape[0]):
