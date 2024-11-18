@@ -426,6 +426,24 @@ class RRT_Tokamak(object):
 
         return Bz,Br
 
+    @staticmethod    
+    def cyl2xyz(pos_cyl): 
+        """
+        Converts data point from cylinderical coordinates to rectangular coordinates
+
+        Parameters:
+            pos_cyl (array,float): position to change coordinates [phi][z][r]
+        
+        Returns:
+            pos_xyz (array,float): position in rectangular coordinates [x][y][z]
+        """
+        pos_xyz = np.zeros(3)
+        pos_xyz[0] = pos_cyl[2]*np.cos(pos_cyl[0])
+        pos_xyz[1] = pos_cyl[2]*np.sin(pos_cyl[0])
+        pos_xyz[2] = pos_cyl[1]
+
+        return pos_xyz
+
 def psi_output(grid,fname='psi_grid.dat'):
     """
     This outputs the raw psi data on the r,z grid.
