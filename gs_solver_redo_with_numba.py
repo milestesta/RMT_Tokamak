@@ -170,7 +170,7 @@ class RRT_Tokamak(object):
         Returns: 
             lcfs_out (float,2): The spatial [Z, R] locations of the points on the LCFS. 
         """
-        if self.is_solovev:
+        if self.is_solovev is True:
             a = self.a
             b = self.b
             c = self.c
