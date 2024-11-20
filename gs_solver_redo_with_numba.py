@@ -254,7 +254,7 @@ class RRT_Tokamak(object):
             Z_array (float): numpy array of the vertical points in the computational grid. 
             psi_x (float): The intended value of the flux at the LCFS. 
         """
-        if self.is_solovev:
+        if self.is_solovev is True:
             a = self.a
             b = self.b
             c = self.c
