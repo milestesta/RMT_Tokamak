@@ -37,7 +37,7 @@ spec = [
     ('is_solovev', boolean)
 ]
 
-@jitclass(spec)
+# @jitclass(spec)
 class RRT_Tokamak(object):
     """
     A class for our plasma modeling within a tokamak
@@ -268,9 +268,9 @@ class RRT_Tokamak(object):
             Z_max = majR*np.sqrt(((b+c)*(a-c))/(2.0*c*c))
             Z = Z_min + (((Z_max-Z_min)/(2.0*pi))*theta)
             # which r we return should alternate. 
-            d_theta = ((2.0*pi)/self.N_poles)
-            sign = (((theta/d_theta))%2.0)
-            # sign = float32(sign)
+            d_theta = (2.0*pi)/self.N_poles
+            sign = (np.floor(theta/d_theta))%2.0
+            sign = float32(sign)
             alpha = (2.0*c*(Z**2.0))/((a-c)*majR)
             beta = (((b+c)*(Z**2.0)) - (2*psi_x/(majR**2.0)))/(a-c)
             R = np.sqrt((majR**2.0) - (alpha*majR) + (((-1.0)**sign)*(majR*np.sqrt((alpha**2.0) - (4.0*beta)))))
