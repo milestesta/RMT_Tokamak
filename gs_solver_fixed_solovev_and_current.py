@@ -37,10 +37,11 @@ spec = [
     ('is_solovev', boolean)
 ]
 
-# @jitclass(spec)
+@jitclass(spec)
 class RRT_Tokamak(object):
     """
-    A class for our plasma modeling within a tokamak
+    A class for our plasma modeling within a tokamak. Based on the work in "Tao Xu and Richard Fitzpatrick 2019 Nucl. Fusion 59 064002" (DOI 10.1088/1741-4326/ab1ce3) and 
+    "Toroidally symmetric polynomial multipole solutions of the vector laplace equation" by M.F Reusch and G.H Neilson. https://doi.org/10.1016/0021-9991(86)90041-0
 
     Parameters:
         minR (float): minor radius in meters
@@ -151,8 +152,8 @@ class RRT_Tokamak(object):
                 if abs(Z) <= Z_max: #only works for up down symmetric. 
                     alpha = (2*c*(Z**2.0))/((a-c)*majR)
                     beta = (((b+c)*(Z**2.0)) - (2*psi_x/(majR**2.0)))/(a-c)
-                    print((alpha**2.0) - (4.0*beta))
-                    print((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta))))
+                    # print((alpha**2.0) - (4.0*beta))
+                    # print((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta))))
                     r_less = np.sqrt((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ##potential issue. 
                     r_more = np.sqrt((majR**2.0) - (alpha*majR) + (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ##potential issue. 
                     for i in range(0, Rdim):
@@ -229,10 +230,10 @@ class RRT_Tokamak(object):
 
     def _psi_on_LCFS(self,a=1.2,b=-1,c=1.1):
         """
-        Establishes surface?
+        This function specifies the desired value of the flux on the LCFS
 
         Returns:
-            ?
+            value of flux on LCFS. 
         """
         #Using notation from the following paper:
         #Tao Xu and Richard Fitzpatrick 2019 Nucl. Fusion 59 064002
@@ -241,6 +242,16 @@ class RRT_Tokamak(object):
 
 
     def _LCFS(self,r,theta):
+        """This function takes in a radius length and a poloidal angle, and returns a the R, Z coordinates
+        of the corresponding point on the LCFS. 
+
+        Args:
+            r (float): radial distance from the magnetic axis (R = majR, Z = 0) to the lcfs point. Not generally used. 
+            theta (float): Poloidal coordinate from the outboard mid-plane (R = majR + r, Z = 0, counterclockwise)
+        Returns:
+            R_lcfs (float): R coordinate of the lcfs point.
+            Z_lcfs (float): Z coordinate of the lcfs point. 
+        """
         #Defines local variables to avoid calling object so much
         minR = self.minR
         majR = self.majR
@@ -281,6 +292,18 @@ class RRT_Tokamak(object):
         return(R_lcfs, Z_lfcs)
 
     def _greens_function(self,R_p, Z_p, R, Z): #calculates the value of the green's function based on the plasma at (R_p, Z_p), as viewed at (R, Z)
+        """This function calculates the green's function response (see equation 23 in Xu, Fitzpatrick) at R, Z based on the plasma current at 
+        R_p, Z_p
+
+        Args:
+            R_p (float): Real space R location of the plasma current. 
+            Z_p (float): Real space Z location of the plasma current. 
+            R (float): Real space R location of the observer. 
+            Z (float): Real space Z location of the observer.
+        
+        Returns:
+            (float): Value of the Green's response.  
+        """
         k = ((4.0*R_p*R)/(((R + R_p)*(R + R_p)) + ((Z-Z_p)*(Z - Z_p))))**(0.5)
 
         index = int(np.round(k,4)*10000)
@@ -293,15 +316,40 @@ class RRT_Tokamak(object):
 
     def _pressure_term(self,R_p, Z_p): #the pressure term in the GS equaion
         #return(np.exp((((((R_p-R_0)*(R_p-R_0)) + (Z_p*Z_p))/(1000)))*(-1.0)))
+        """Calculates the first term in equation 3 of Xu Fitzpatrick, essentially the diamagnetic pressure current. 
+
+        Args:
+            R_p (float): Real space R location of the plasma current. 
+            Z_p (float): Real space Z location of the plasma current.
+        """
         a = 1.2 #EDIT THIS LATER
         return(-a*R_p)#up down symmetric solovev tororidal current. 
 
     def _toroidal_field_term(self,R_p, Z_p): #the toroidal field term in the GS. 
         #return(np.exp((((((R_p-R_0)*(R_p-R_0)) + (Z_p*Z_p))/(1000)))*(-1.0)))
+        """Calculates the toroidal field component of the source term in the Grad-Shafranov equation. (second term in equation
+        3 of Xu Fitzpatrick)
+
+        Args:
+            R_p (float): Real space R location of the plasma current. 
+            Z_p (float): Real space Z location of the plasma current.
+        Returns:
+            (float): second term in equation 3 of Xu Fitzpatrick 
+        """
         b = -1 #EDIT THIS LATER
         return(-b*(self.majR**2.0)/R_p) #up down symmetric solovev  toroidal field 
 
     def _plasma_current(self,R_p, Z_p):
+        """Combines the pressure and toroidal contributions to the plasma current to produce the total plasma current at R_p, Z_p. Depending
+        on the is_solovev flag it will return either the solovev current (equation 3 of Xu Fitzpatrick) or a typical current for a miller surface.
+
+        Args:
+            R_p (float): Real space R location of the plasma current. 
+            Z_p (float): Real space Z location of the plasma current.
+        
+        Returns:
+            (float): Total plasma current at R_p, Z_p
+        """
         if self.is_solovev == True:
             current = ((1.0)*(self._pressure_term(R_p, Z_p) + self._toroidal_field_term(R_p, Z_p)))
         elif self.is_solovev == False:
@@ -329,6 +377,15 @@ class RRT_Tokamak(object):
         return(current)
 
     def _plasma_flux(self,R_o, Z_o, plasma_grid_list): #calculates the flux at (R, Z) due to the plasma current at each location listed in plasma_grid
+        """Calculates the poloidal flux function at the point R_o, Z_o due to all plasma currents (stored in plasma_grid_list). 
+
+        Args:
+            R_o (float): Observer R location.
+            Z_o (float): Observer Z location. 
+            plasma_grid_list (int array): The indices of all elements of the computational grid that contain plasma. 
+        Returns:
+            (float): poloidal flux functino at (R_o, Z_o)
+        """
         #Defines local variables to avoid calling object so much
         sim_width = self.sim_width
         sim_height = self.sim_height
@@ -347,6 +404,16 @@ class RRT_Tokamak(object):
         return(flux)
 
     def _multipole_contributions(self,plasma_grid_arr,A_NM_array):
+        """This function solves a matrix equation to figure out the contribution from each pole in the multipole expansion
+        of the flux due to the coils required to fix the Dirichlet boundary condition that psi = psi_x on the LCFS. 
+
+        Args:
+            plasma_grid_arr (int array): Contains the indices of all grid points containing plasma. 
+            A_NM_array (float array): contains the coefficients needed to calculate the multipole expansion to order N. 
+
+        Returns:
+            (float array): a one dimensional vector containing the weight coefficient of each pole. 
+        """
         #Defines local variables to avoid calling object so much
         N_poles = self.N_poles
         minR = self.minR
@@ -399,6 +466,17 @@ class RRT_Tokamak(object):
         return np.linalg.solve(psi_multipole_matrix, delta_psi) #contains the coefficient that quantifies the amount of that
 
     def _field_due_to_pole_N(self,R_o, Z_o, N, A_NM_array):
+        """This function calculates the flux at a point R_o, Z_o due to the Nth multipole. 
+
+        Args:
+            R_o (float): Observer R location.
+            Z_o (float): Observer Z location. 
+            N (int): The order of pole that we want. Note that N=1 is skipped, so N>2 should be indexed forward. IE requesting N = 2 actually gives the 3rd pole. 
+            A_NM_array (float array): contains the coefficients needed to calculate the multipole expansion to order N.
+
+        Returns:
+            float: The poloidal flux function fue the the Nth multipole. 
+        """
         if N == 0:
             return 1
         else:
@@ -408,6 +486,16 @@ class RRT_Tokamak(object):
             return psi
 
     def _field_due_to_all_poles(self,R,Z,A_NM_array,multipole_contributions):
+        """This function uses the weighting coefficients to calculate the overall coil contribution at a point R, Z. 
+
+        Args:
+            R (float): Observer R location. 
+            Z (float): Observer Z location. 
+            A_NM_array (float array): contains the coefficients needed to calculate the multipole expansion to order N.
+            multipole_contributions (float array): a one dimensional vector containing the weight coefficient of each pole. 
+        Returns: 
+            (float): The poloidal flux function at R, Z due to all poles. Basically the coil contribution. 
+        """
         psi_mp = 0.0
         for n in range(0, self.N_poles):
             psi_mp += self._field_due_to_pole_N(R, Z, n, A_NM_array)*multipole_contributions[n] 
@@ -416,7 +504,7 @@ class RRT_Tokamak(object):
     def plasma_current_grid(self):
         """
         Returns:
-            current_grid (array): plasma current at all points in [Z][R] sampling. Will be 0 outside the LCFS. 
+            current_grid (float array): plasma current at all points in [Z][R] sampling. Will be 0 outside the LCFS. 
         """
         #Defines local variables to avoid calling object so much
         sim_width = self.sim_width
@@ -446,7 +534,7 @@ class RRT_Tokamak(object):
     def compute_psi(self):
         """
         Returns:
-            computational_grid (array): psi at all points in [Z][R] sampling
+            computational_grid (float array): psi at all points in [Z][R] sampling
         """
         #Defines local variables to avoid calling object so much
         sim_width = self.sim_width
