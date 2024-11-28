@@ -27,7 +27,7 @@ Grad Shafranov Equation (Chapter 6):
 
 <img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Triangulation%20and%20Elongation%20(from%20presentation).png width="500">
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Tokamak%20Particle%20Motion%20Simulation.mp4 width="500">
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Tokamak%20Particle%20Motion%20Simulation%20v2.mp4 width="500">
 
 ## Installation
 Necessary packages
