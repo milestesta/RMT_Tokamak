@@ -27,12 +27,15 @@ Grad Shafranov Equation (Chapter 6):
 Necessary packages
 
 numpy
+    
     pip install numpy 
 
 scipy
+    
     pip install scipy
 
 numba
+    
     pip install numba
 
 
