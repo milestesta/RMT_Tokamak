@@ -21,7 +21,13 @@ Grad Shafranov Equation (Chapter 6):
 
 ## Example Usage
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Screenshot%202024-11-27%20at%2011.13.15.png width="500">
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/500x500%20grid%201%20(presentation).jpg width="500">
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Constant%20Psi%20contours%20(presentation).png width="500">
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Triangulation%20and%20Elongation%20(from%20presentation).png width="500">
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Tokamak%20Particle%20Motion%20Simulation%20-%20Made%20with%20Clipchamp_1732773110774.mp4 width="500">
 
 ## Installation
 Necessary packages
