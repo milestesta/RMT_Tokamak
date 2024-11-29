@@ -11,15 +11,15 @@ We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain va
 
 The user has a choice of implementing a Solov'ev type solution using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the form (https://doi.org/10.1063/1.872666):
 
->$R(\theta) = R_o(1 + \epsilon cos(\theta + arcsin(\delta)sin(\theta)))$
->$Z(\theta) = \epsilon \kappa sin(\theta)$
+$$R(\theta) = R_o(1 + \epsilon cos(\theta + arcsin(\delta)sin(\theta)))$$
+$$Z(\theta) = \epsilon \kappa sin(\theta)$$
 
 Where the shaping parameters are:
 
->$R_o$: The major radius of the tokamak.
->$\epsilon = \frac{a}{R_o}$: The inverse aspect ratio of the tokamak, for minor radius a.
->$\delta$: triangularity of the LCFS, must be between 0 and 1.
->$\kappa$: The elongation of the LCFS. 
+$$R_o: \text{The major radius of the tokamak.}$$
+$$\epsilon = \frac{a}{R_o}: \text{The inverse aspect ratio of the tokamak, for minor radius a.}$$
+$$\delta$: \text{triangularity of the LCFS, must be between 0 and 1.}$$
+$$\kappa$: \text{The elongation of the LCFS.}$$ 
 
 This parameterisation is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu and Waltz in the lat 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the doi link: (https://doi.org/10.1063/1.872666) 
 
