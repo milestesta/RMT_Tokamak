@@ -4,8 +4,8 @@ Welcome to the RRT Tokamak Code, by Kieran McDonald, Joe Roll and Miles Testa
 ## Description
 This code implements the numerical Grad-Shafranov (GS) solver for finding the poloidal flux function ($\psi$) in an up-down symmetric tokamak in the (R, Z) plane. The methdod is a slight extension of that found in Xu and Fitzpatrick's "Vacuum Solution for Solov'ev's equilibrium configuration in tokamaks", hereafter referred to as (Xu, Fitzpatrick). Assuming that all plasma is confined to the region of the tokamak within the so called "Last Closed Flux Surface" (herafter referred to as the LCFS), which is the last closed contour of $\psi$, we are solving the system:
 
->$\nabla^* \psi = R(\frac{\partial}{\partial R}\frac{1}{R}\frac{\partial \psi}{\partial R}) + \frac{\partial^2 \psi}{\partial Z^2} = -j_{\phi} R$ for points within the LCFS,
->$\nabla^* \psi = 0$ for points outside of the LCFS. 
+$$\nabla^* \psi = R(\frac{\partial}{\partial R}\frac{1}{R}\frac{\partial \psi}{\partial R}) + \frac{\partial^2 \psi}{\partial Z^2} = -j_{\phi} R \text{for points within the LCFS}$$
+$$\nabla^* \psi = 0 \text{for points outside of the LCFS.}$$ 
 
 We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay-wall, we do not attach it, and merely provide the doi link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
 
@@ -18,8 +18,8 @@ Where the shaping parameters are:
 
 $$R_o: \text{The major radius of the tokamak.}$$
 $$\epsilon = \frac{a}{R_o}: \text{The inverse aspect ratio of the tokamak, for minor radius a.}$$
-$$\delta$: \text{triangularity of the LCFS, must be between 0 and 1.}$$
-$$\kappa$: \text{The elongation of the LCFS.}$$ 
+$$\delta: \text{triangularity of the LCFS, must be between 0 and 1.}$$
+$$\kappa: \text{The elongation of the LCFS.}$$ 
 
 This parameterisation is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu and Waltz in the lat 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the doi link: (https://doi.org/10.1063/1.872666) 
 
