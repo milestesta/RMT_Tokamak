@@ -1,6 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_count = 7):
+    """This code runs a finite difference version of the Grad-Shafranov equation on the psi made by gs_solver. You feed in the 
+    name of the current and psi files specified in the gs_solver output functions, as well as the grid spacing and major radius of the 
+    tokamak. If the output file has not been altered, leave the preamble_count as 7. 
+
+    Args:
+        psi_file_name (string): Name given to the output of the gs_solver class in the function psi_output. 
+        current_file_name (string): Name given to the output of the gs_solver class in the function current_output. 
+        dR (float): R grid spacing used in gs_solver
+        dZ (float): Z grid spacing used in gs_solver
+        majR (float): major radius of the tokamak specified in gs_solver. 
+        preamble_count (int, optional): number of lines of preamble in the outputs of psi_output and current_output
+    
+    Returns:
+        fd_grid (float, array):
+        current_grid (float, array): Returns the RHS of the GS equation, should be equal to fd_grid. 
+        difference (float, array): difference between fd_grid and current grid. Should be zero. 
+    """
     raw_data = []
     line_counter = 0
     #initial import. 
@@ -35,9 +52,6 @@ def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_c
             line = line.split()
             raw_data.append(line)
 
-    Rdim = int(raw_data[3][-1])
-    Zdim = int(raw_data[4][-1])
-    N_data_points = Rdim*Zdim
 
     
     unsplit_current_data = np.asarray(raw_data[preamble_count:(preamble_count + N_data_points)])
@@ -55,6 +69,11 @@ def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_c
             psi_matrix[k][i] = psi_vals[i+(k*(Zdim))]
             current_matrix[k][i] = current_vals[i+(k*(Zdim))]
     
+    #scaling the current matrix by -R to get the RHS of the GS. 
+    for k in range(0, Zdim):
+        for i in range(0, Rdim):
+            current_matrix[k][i] = -(current_matrix[k][i])*(R_array[i])
+    current_matrix = current_matrix[1:-1][1:-1] #cutting off the edges so we can compare to the finite difference grid. 
     
     fd_grid = np.zeros((Zdim, Rdim), float)
     for k in range(1, Zdim-1):
@@ -63,9 +82,20 @@ def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_c
             d2Z_psi = (psi_matrix[k+1, i] + psi_matrix[k-1, i] - (2*psi_matrix[k, i]))/(dZ*dZ)
             dR_psi= (psi_matrix[k, i+1] - psi_matrix[k, i-1])/(2*R_array[i]*dR)
             fd_grid[k, i] = -dR_psi + d2R_psi + d2Z_psi
+
+    difference = fd_grid - current_matrix #difference between the solution and the current. 
     plt.imshow(fd_grid)
     plt.figure()
     plt.imshow(current_matrix)
+    plt.figure()
+    min_psi = np.min(psi_matrix) # minimum value of psi for contours
+    max_psi = np.max(psi_matrix) # maximum value of psi for contours
+    fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(12,4),dpi=100)
+    ax[1].set_title(r'Constant $\psi$ contours')
+    ax[1].set_xlabel('r [m]')
+    ax[1].set_ylabel('z [m]')
+    CS = ax[1].contour(R_array, Z_array, psi_matrix, levels = np.linspace(0, 0.0003, 20))
+    plt.imshow(psi_matrix)
     plt.show()
-    return(fd_grid)
-finite_difference("psi_grid.dat", "current_grid.dat", 0.2/50, 0.2/50, 1.0)
+    
+    return(fd_grid, current_matrix, difference)
