@@ -1,20 +1,20 @@
 # RRT_Tokamak
-Welcome to the RRT Tokamak Code, by Kieran McDonald, Joe Roll and Miles Testa
+Welcome to the RRT Tokamak Code, by Kieran McDonald, Joe Roll, and Miles Testa
 
 ## Description
-This code implements the numerical Grad-Shafranov (GS) solver for finding the poloidal flux function ($\psi$) in an up-down symmetric tokamak in the (R, Z) plane. The methdod is a slight extension of that found in Xu and Fitzpatrick's "Vacuum Solution for Solov'ev's equilibrium configuration in tokamaks", hereafter referred to as (Xu, Fitzpatrick). Assuming that all plasma is confined to the region of the tokamak within the so called "Last Closed Flux Surface" (herafter referred to as the LCFS), which is the last closed contour of $\psi$, we are solving the system:
+This code implements the numerical Grad-Shafranov (GS) solver for finding the poloidal flux function ($\psi$) in an up-down symmetric tokamak in the (R, Z) plane. The method is a slight extension of that found in Xu and Fitzpatrick's "Vacuum Solution for Solov'ev's equilibrium configuration in tokamaks", hereafter referred to as (Xu, Fitzpatrick). Assuming that all plasma is confined to the region of the tokamak within the so-called "Last Closed Flux Surface" (hereafter referred to as the LCFS), which is the last closed contour of $\psi$, we are solving the system:
 
-$$\nabla^* \psi = R(\frac{\partial}{\partial R}\frac{1}{R}\frac{\partial \psi}{\partial R}) + \frac{\partial^2 \psi}{\partial Z^2} = -j_{\phi} R \text{ for points within the LCFS}$$
+$$\nabla^* \psi = R \frac{\partial}{\partial R}\left(\frac{1}{R}\frac{\partial \psi}{\partial R} \right) + \frac{\partial^2 \psi}{\partial Z^2} = -j_{\phi} R \text{ for points within the LCFS}$$
 $$\nabla^* \psi = 0 \text{ for points outside of the LCFS.}$$ 
 
-Note that we apply the same normalisation for the field, current and flux as in Xu, Fitzpatrick. 
+Note that we apply the same normalization for the field, current, and flux as in Xu, Fitzpatrick. 
 
-We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay-wall, we do not attach it, and merely provide the doi link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
+We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
 
-The user has a choice of implementing a Solov'ev type solution using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the the following form is implemented (https://doi.org/10.1063/1.872666):
+The user can implement a Solov'ev-type solution using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the following form is implemented (https://doi.org/10.1063/1.872666):
 
-$$R(\theta) = R_o(1 + \epsilon cos(\theta + arcsin(\delta)sin(\theta)))$$
-$$Z(\theta) = \epsilon \kappa sin(\theta)$$
+$$R(\theta) = R_o\Big(1 + \epsilon \cos\big(\theta + \arcsin(\delta)\sin(\theta)\big)\Big)$$
+$$Z(\theta) = \epsilon \kappa \sin(\theta)$$
 
 Where the shaping parameters are:
 
@@ -23,9 +23,9 @@ $$\epsilon = \frac{a}{R_o}: \text{ The inverse aspect ratio of the tokamak, for 
 $$\delta: \text{ triangularity of the LCFS, must be between 0 and 1.}$$
 $$\kappa: \text{ The elongation of the LCFS.}$$ 
 
-This parameterisation is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu and Waltz in the lat 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the doi link: (https://doi.org/10.1063/1.872666) 
+This parameterization is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu and Waltz in the lat 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1063/1.872666) 
 
-The toroidal current chosen is specified via physical intuition from transport codes/experiment. For the solovev, the current is chosen as it is an exact solution to the GS equation. For the miller, a physically reasonable choice is specified, though the user is welcome to implement their own currents as guided by results from their own transport simulations/experiments. 
+The toroidal current chosen is specified via physical intuition from transport codes/experiments. For the Solov'ev, the current is chosen as it is an exact solution to the GS equation. For the miller, a physically reasonable choice is specified, though the user is welcome to implement their own currents as guided by results from their own transport simulations/experiments. 
 
 
 
@@ -33,7 +33,7 @@ For more details on the theory, see the attached papers, as well as the handwrit
 
 Using the LCFS and $\psi$, we find the magnetic field at each point and use this to simulate the motion of a particle in the tokamak. As we assume no equilibrium toroidal fluid flow, the electric field is assumed to be zero (due to the Ideal MHD Ohm's law), and the motion is merely due to magnetic fields.  
 
-Our implementation utilizes numba to reduce the computation time by a factor of about 50. 
+Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a factor of about 50. 
 
 ## Background Information
 
