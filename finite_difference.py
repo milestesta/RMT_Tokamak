@@ -73,7 +73,7 @@ def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_c
     for k in range(0, Zdim):
         for i in range(0, Rdim):
             current_matrix[k][i] = -(current_matrix[k][i])*(R_array[i])
-    current_matrix = current_matrix[1:-1][1:-1] #cutting off the edges so we can compare to the finite difference grid. 
+    # current_matrix = current_matrix[1:-1][1:-1] #cutting off the edges so we can compare to the finite difference grid. 
     
     fd_grid = np.zeros((Zdim, Rdim), float)
     for k in range(1, Zdim-1):
@@ -84,18 +84,6 @@ def finite_difference(psi_file_name, current_file_name, dR, dZ, majR, preamble_c
             fd_grid[k, i] = -dR_psi + d2R_psi + d2Z_psi
 
     difference = fd_grid - current_matrix #difference between the solution and the current. 
-    plt.imshow(fd_grid)
-    plt.figure()
-    plt.imshow(current_matrix)
-    plt.figure()
-    min_psi = np.min(psi_matrix) # minimum value of psi for contours
-    max_psi = np.max(psi_matrix) # maximum value of psi for contours
-    fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(12,4),dpi=100)
-    ax[1].set_title(r'Constant $\psi$ contours')
-    ax[1].set_xlabel('r [m]')
-    ax[1].set_ylabel('z [m]')
-    CS = ax[1].contour(R_array, Z_array, psi_matrix, levels = np.linspace(0, 0.0003, 20))
-    plt.imshow(psi_matrix)
-    plt.show()
+
     
     return(fd_grid, current_matrix, difference)
