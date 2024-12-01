@@ -27,22 +27,11 @@ This parameterization is known as the "Miller Geometry", and was first introduce
 
 The toroidal current chosen is specified via physical intuition from transport codes/experiments. For the Solov'ev, the current is chosen as it is an exact solution to the GS equation. For the miller, a physically reasonable choice is specified, though the user is welcome to implement their own currents as guided by results from their own transport simulations/experiments. 
 
-
-
 For more details on the theory, see the attached papers, as well as the handwritten PDF. 
 
 Using the LCFS and $\psi$, we find the magnetic field at each point and use this to simulate the motion of a particle in the tokamak. As we assume no equilibrium toroidal fluid flow, the electric field is assumed to be zero (due to the Ideal MHD Ohm's law), and the motion is merely due to magnetic fields.  
 
 Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a factor of about 50. 
-
-## Background Information
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%201.png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%202.png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%203.png width="500">
-
 
 ## References
 For more information, consider reading the following papers/books.
