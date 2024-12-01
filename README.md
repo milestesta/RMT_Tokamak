@@ -6,11 +6,7 @@ We implement the numerical method for finding the last closed (magnetic) flux su
 
 ## Background Information
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%201.png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%202.png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Background%20Information/Equation%203.png width="500">
+Removed so we can delete the Equation pictures from the repository.
 
 
 ## References
