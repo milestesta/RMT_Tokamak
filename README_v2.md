@@ -7,7 +7,7 @@ This code implements the numerical Grad-Shafranov (GS) solver for finding the po
 $$\nabla^* \psi = R \frac{\partial}{\partial R}\left(\frac{1}{R}\frac{\partial \psi}{\partial R} \right) + \frac{\partial^2 \psi}{\partial Z^2} = -j_{\phi} R \text{ for points within the LCFS}$$
 $$\nabla^* \psi = 0 \text{ for points outside of the LCFS.}$$ 
 
-Note that we apply the same normalization for the field, current, and flux as in Xu, Fitzpatrick. 
+where $j_{\phi}$ is the toroidal current.  Note that we apply the same normalization for the field, current, and flux as in Xu, Fitzpatrick. 
 
 We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
 
