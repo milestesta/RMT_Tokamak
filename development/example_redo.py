@@ -3,7 +3,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import gs_solver_rebuild as gs
-# from simulate import simulate
 
 R_0 = 1 # meters
 N_R = 400
