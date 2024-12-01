@@ -77,15 +77,15 @@ Grad Shafranov Equation (Chapter 6):
 ## Installation
 Necessary packages
 
-numpy
+$\texttt{NumPy}$
     
     pip install numpy 
 
-scipy
+$\texttt{SciPy}$
     
     pip install scipy
 
-numba
+$\texttt{Numba}$
     
     pip install numba
 
