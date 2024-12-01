@@ -18,13 +18,6 @@ print('Starting Psi calculation',flush=True)
 
 model = gs.RRT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z,N_poles=N_poles,sim_width=simulation_width,sim_height=simulation_height,is_solovev=True)
 psi,psi_plasma,psi_multipole = model.compute_flux()
-gs.psi_output(psi) #writes psi to output file
-
-# Simulates particle in our tokamak
-
-# print('Starting simulation',flush=True)
-
-# xt = simulate(model,x0=[0.0,0.0,1.01],v0=[5.0,0.01,0.00],dt=0.005,tsteps=1200)
 
 ########## Makes plots ##########
 
@@ -39,16 +32,6 @@ dZ = simulation_height/N_Z
 Z_array = np.zeros(N_Z)
 for j in range(0, N_Z):
     Z_array[j] = (j - (N_Z/2.0))*dZ 
-
-# Plots phi component of the simulation
-# fig,ax = plt.subplots()
-# phi = []
-# for angle in range(xt.shape[0]):
-#     phi.append(np.mod(xt[angle][0],2*np.pi))
-
-# ax.set_xlabel('time series')
-# ax.set_ylabel(r'$\phi$ (radians)')
-# ax.plot(np.linspace(0,1,xt.shape[0]),phi)
 
 fig,ax = plt.subplots(nrows=1,ncols=3,figsize=(12,4),dpi=100)
 
@@ -67,7 +50,6 @@ ax[0].plot(R_array, center_cut)
 
 # Plots constant psi contours on our grid
 
-# psi_lcfs = model.miller_surface() # determines last closed flux surface (LCFS)
 min_psi = np.min(psi) # minimum value of psi for contours
 max_psi = np.max(psi) # maximum value of psi for contours
 
@@ -85,10 +67,6 @@ ax[2].set_title(r'$\mathbf{B}$ and trajectory')
 ax[2].set_xlabel('r [m]')
 ax[2].set_ylabel('z [m]')
 ax[2].quiver(R_array[0::],Z_array,Br,Bz)
-
-# Plots plasma trajectory
-
-# ax[2].scatter(xt[:,2],xt[:,1],s=0.5,c='r')
 
 fig.tight_layout()
 plt.show()
