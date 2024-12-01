@@ -1,4 +1,4 @@
-#Example script to use this repository
+# Example script to use this repository
 
 import numpy as np
 import matplotlib.pyplot as plt
