@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.special
 import scipy.constants
-from numba import int32,float32,boolean
+from numba import int64,float64,boolean
 from numba import prange
 from numba.experimental import jitclass
 
@@ -21,18 +21,18 @@ for ind,x in enumerate(np.linspace(0,1,10000)):
     elliptic_int_2[ind] = scipy.special.ellipe(x)
 
 spec = [
-    ('minR',float32),
-    ('majR',float32),
-    ('triangularity',float32),
-    ('elongation',float32),
-    ('Rdim',int32),
-    ('Zdim',int32),
-    ('N_poles',int32),
-    ('sim_width',float32),
-    ('sim_height',float32),
-    ('a',float32),
-    ('b',float32),
-    ('c',float32),
+    ('minR',float64),
+    ('majR',float64),
+    ('triangularity',float64),
+    ('elongation',float64),
+    ('Rdim',int64),
+    ('Zdim',int64),
+    ('N_poles',int64),
+    ('sim_width',float64),
+    ('sim_height',float64),
+    ('a',float64),
+    ('b',float64),
+    ('c',float64),
     ('just_plasma',boolean),
     ('is_solovev', boolean)
 ]
@@ -40,7 +40,7 @@ spec = [
 @jitclass(spec)
 class RRT_Tokamak(object):
     """
-    A class for our plasma modeling within a tokamak. Based on the work in "Tao Xu and Richard Fitzpatrick 2019 Nucl. Fusion 59 064002" (DOI 10.1088/1741-4326/ab1ce3) and 
+    A class for our plasma modeling within a tokamak. Based on the work in "Tao Xu and Richard Fitzpatrick 2019 Nucl. Fusion 59 064002" (DOI 10.1088/1741-4646/ab1ce3) and 
     "Toroidally symmetric polynomial multipole solutions of the vector laplace equation" by M.F Reusch and G.H Neilson. https://doi.org/10.1016/0021-9991(86)90041-0
 
     Parameters:
@@ -63,7 +63,7 @@ class RRT_Tokamak(object):
 
     def __init__(self,minR=0.1,majR=1,tri=0.8,elo=1,
                     Rdim=10,Zdim=10,N_poles=10,
-                    sim_width=0.3,sim_height=0.3,a=1.2, b=-1.0, c=1.1,just_plasma=False, is_solovev=True):
+                    sim_width=0.3,sim_height=0.3,a=1.2, b=-1.0, c=1.1,just_plasma=False, is_solovev=False):
         #Sets user-input constraints
         self.minR = minR
         self.majR = majR
@@ -152,10 +152,8 @@ class RRT_Tokamak(object):
                 if abs(Z) <= Z_max: #only works for up down symmetric. 
                     alpha = (2*c*(Z**2.0))/((a-c)*majR)
                     beta = (((b+c)*(Z**2.0)) - (2*psi_x/(majR**2.0)))/(a-c)
-                    # print((alpha**2.0) - (4.0*beta))
-                    # print((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta))))
-                    r_less = np.sqrt((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ##potential issue. 
-                    r_more = np.sqrt((majR**2.0) - (alpha*majR) + (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ##potential issue. 
+                    r_less = np.sqrt((majR**2.0) - (alpha*majR) - (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ## not the issue!
+                    r_more = np.sqrt((majR**2.0) - (alpha*majR) + (majR*np.sqrt((alpha**2.0) - (4.0*beta)))) ## not the issue! 
                     for i in range(0, Rdim):
                         R = majR + (i - Rdim/2)*dR
                         if (R <= r_more) and (R >= r_less):
@@ -280,8 +278,7 @@ class RRT_Tokamak(object):
             Z = Z_min + (((Z_max-Z_min)/(2.0*pi))*theta)
             # which r we return should alternate. 
             d_theta = (2.0*pi)/self.N_poles
-            sign = (np.floor(theta/d_theta))%2.0
-            sign = float32(sign)
+            sign = ((np.floor(theta/d_theta))%2.0)
             alpha = (2.0*c*(Z**2.0))/((a-c)*majR)
             beta = (((b+c)*(Z**2.0)) - (2*psi_x/(majR**2.0)))/(a-c)
             R = np.sqrt((majR**2.0) - (alpha*majR) + (((-1.0)**sign)*(majR*np.sqrt((alpha**2.0) - (4.0*beta)))))
@@ -527,7 +524,7 @@ class RRT_Tokamak(object):
         for pt in prange(0, plasma_grid_arr.shape[0]):
             #Defines point
             R,Z = plasma_grid_arr[pt]
-            i,j = plasma_grid_arr_inds[pt].astype(int32)
+            i,j = plasma_grid_arr_inds[pt].astype(int64)
             current_grid[j][i] = self._plasma_current(R, Z)
         return(current_grid)
                     
@@ -567,7 +564,7 @@ class RRT_Tokamak(object):
             for pt in prange(0, plasma_grid_arr.shape[0]):
                 #Defines point
                 R,Z = plasma_grid_arr[pt]
-                i,j = plasma_grid_arr_inds[pt].astype(int32)
+                i,j = plasma_grid_arr_inds[pt].astype(int64)
 
                 computational_grid[j][i] = self._field_due_to_all_poles(R,Z,Anm,MPC) + self._plasma_flux(R, Z, plasma_grid_arr)
 
