@@ -1,5 +1,5 @@
-# RRT_Tokamak
-Welcome to the RRT Tokamak Code, by Kieran McDonald, Joe Roll, and Miles Testa
+# RMT_Tokamak
+Welcome to the RMT Tokamak Code, by Kieran McDonald, Joe Roll, and Miles Testa
 
 ## Description
 This code implements the numerical Grad-Shafranov (GS) solver for finding the poloidal flux function ($\psi$) in an up-down symmetric tokamak in the (R, Z) plane. The method is a slight extension of that found in Xu and Fitzpatrick's "Vacuum Solution for Solov'ev's equilibrium configuration in tokamaks", hereafter referred to as (Xu, Fitzpatrick). Assuming that all plasma is confined to the region of the tokamak within the so-called "Last Closed Flux Surface" (hereafter referred to as the LCFS), which is the last closed contour of $\psi$, we are solving the system:
