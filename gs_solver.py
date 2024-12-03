@@ -34,7 +34,7 @@ spec = [
 ]
 
 @jitclass(spec)
-class RRT_Tokamak(object):
+class RMT_Tokamak(object):
     """
     A class for our plasma modeling within a tokamak
 
