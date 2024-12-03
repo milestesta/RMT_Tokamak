@@ -38,7 +38,7 @@ spec = [
 ]
 
 @jitclass(spec)
-class RRT_Tokamak(object):
+class RMT_Tokamak(object):
     """
     A class for our plasma modeling within a tokamak. Based on the work in "Tao Xu and Richard Fitzpatrick 2019 Nucl. Fusion 59 064002" (DOI 10.1088/1741-4646/ab1ce3) and 
     "Toroidally symmetric polynomial multipole solutions of the vector laplace equation" by M.F Reusch and G.H Neilson. https://doi.org/10.1016/0021-9991(86)90041-0
