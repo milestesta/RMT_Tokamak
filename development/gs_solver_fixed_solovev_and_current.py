@@ -666,7 +666,7 @@ def psi_output(grid,just_plasma = False, fname='psi_grid.dat'):
     This outputs the raw psi data on the r,z grid.
 
     Parameters:
-        grid (array,float): this is the standard output of RRT_Tokamak.compute_psi()
+        grid (array,float): this is the standard output of RMT_Tokamak.compute_psi()
         fname (string): this denotes the name of the output file to write to
     """
 
@@ -697,7 +697,7 @@ def current_output(grid, just_plasma = False, fname='current_grid.dat'):
     This outputs the plasma current data on the r,z grid.
 
     Parameters:
-        grid (array,float): this is the standard output of RRT_Tokamak.compute_psi(), but this time for the plasma current. 
+        grid (array,float): this is the standard output of RMT_Tokamak.compute_psi(), but this time for the plasma current. 
         fname (string): this denotes the name of the output file to write to
     """
 
