@@ -16,7 +16,7 @@ simulation_height = 0.3 # meters
 
 print('Starting Psi calculation',flush=True)
 
-model = gs.RRT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z, tri=0.75, elo=1.0, sim_width=simulation_width,sim_height=simulation_height,N_poles=10,just_plasma=False, is_solovev=False)
+model = gs.RMT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z, tri=0.75, elo=1.0, sim_width=simulation_width,sim_height=simulation_height,N_poles=10,just_plasma=False, is_solovev=False)
 psi = model.compute_psi()
 gs.psi_output(psi) #writes psi to output file
 gs.current_output(model.plasma_current_grid()) #writes the current to output file. 
