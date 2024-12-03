@@ -449,7 +449,7 @@ def psi_output(grid,fname='psi_grid.dat'):
     This outputs the raw psi data on the r,z grid.
 
     Parameters:
-        grid (array,float): this is the standard output of RRT_Tokamak.compute_psi()
+        grid (array,float): this is the standard output of RMT_Tokamak.compute_psi()
         fname (string): this denotes the name of the output file to write to
     """
 
