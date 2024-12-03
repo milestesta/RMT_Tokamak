@@ -81,9 +81,9 @@ $\texttt{Numba}$
 
 Download and install the gs_solver.py and/or the simulate.py directly from GitHub
 
-    pip install git+https://github.com/milestesta/RRT_Tokamak/blob/main/gs_solver.py
+    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py
 
-    pip install git+https://github.com/milestesta/RRT_Tokamak/blob/main/simulate.py
+    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py
 
 
 
