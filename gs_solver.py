@@ -15,7 +15,7 @@ mu = scipy.constants.mu_0
 elliptic_int_1 = np.zeros(10000)# #will store values for complete elliptic integral of the first kind.  
 elliptic_int_2 = np.zeros(10000)# #will store values for complete elliptic integral of the second kind. 
 for ind,x in enumerate(np.linspace(0,1,10000)):
-    if ind == 10000-1: #occurs for input=1.  We do it this way to have a spacing of about 0.001 between x points
+    if ind == 10000-1: #occurs for input=1.  We do it this way to have a spacing of about 0.0001 between x points
         break #avoids asymptote at ellipk(x=1)
     elliptic_int_1[ind] = scipy.special.ellipk(x)
     elliptic_int_2[ind] = scipy.special.ellipe(x)
