@@ -9,7 +9,7 @@ def simulate(model,x0,v0,dt,tsteps):
     Simulates particle movement through discretizing Newton's second law
 
     Parameters:
-        model (class): initialized class for RRT_tokamak
+        model (class): initialized class for RMT_tokamak
         x0 (float,3): initial position [phi][z][r]
         v0 (float): initial linear velocity [phi][z][r]
         dt (float): time step
