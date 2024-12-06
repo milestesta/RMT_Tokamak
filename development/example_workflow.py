@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import gs_solver as gs
+import gs_solver_dev as gs
 from simulate import simulate
 from finite_difference import finite_difference
 
