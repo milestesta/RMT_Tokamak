@@ -53,9 +53,9 @@ model = gs.RRT_Tokamak(Rdim=N_R,Zdim=N_Z) # initializes class
 psi = model.compute_psi() # computes psi
 
 # Establishes simulation parameters
-x0 = [0.0,0.0,1.01] # initial position
-v0 = [5.0,0.01,0.00] # initial velocity
-dt = 0.005 # length of time per timestep
+x0 = [ 0.0 , 0.0  , 1.01 ] # initial position [ phi [rad] , z [m] , r [m] ]
+v0 = [ 5.0 , 0.01 , 0.00 ] # initial velocity
+dt = 0.005 # time per step [s]
 tsteps = 5000 # number of timesteps
 
 xt = simulate(model,x0,v0,dt,tsteps) # runs simulation
