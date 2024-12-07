@@ -35,6 +35,53 @@ Using the LCFS and $\psi$, we find the magnetic field at each point and use this
 
 Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a factor of about 50. 
 
+## Common Usage
+
+A more detailed version of this is shown within [`example.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example.py).
+
+The `RMT_Tokamak` class is contained within the [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py) file.  The main usage of this code is to compute our poloidal magnetic flux $\psi$.  A quick example of this on a $500\times500$ grid is
+
+```python
+import numpy as np
+import gs_solver as gs
+
+N_R = 500 # number of points along r
+N_Z = 500 # number of points along z
+
+model = gs.RRT_Tokamak(Rdim=N_R,Zdim=N_Z) # initializes class
+psi = model.compute_psi() # computes psi
+```
+
+## Plot and Animation Examples
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Constant%20Psi%20contours%20(presentation).png width="500">
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Triangulation%20and%20Elongation%20(from%20presentation).png width="500">
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Particle%20Motion%20Simulation%20GIF.gif width="500">
+
+## Installation
+Necessary packages
+
+`NumPy`
+    
+    pip install numpy 
+
+`SciPy`
+    
+    pip install scipy
+
+`Numba`
+    
+    pip install numba
+
+
+Download and install the [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py) and/or the [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py) directly from GitHub
+
+    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py
+
+    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py
+
 ## References
 For more information, consider reading the following papers/books.
 
@@ -53,40 +100,3 @@ Miller Surface Geometry:
 Grad Shafranov Equation (Chapter 6):
 
 > Jeffrey P. Friedberg. "Ideal MHD" Cambridge University Press https://doi.org/10.1017/CBO9780511795046
-
-
-## Plot and Animation Examples
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/500x500%20grid%201%20(presentation).jpg width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Constant%20Psi%20contours%20(presentation).png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Triangulation%20and%20Elongation%20(from%20presentation).png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Particle%20Motion%20Simulation%20GIF.gif width="500">
-
-## Installation
-Necessary packages
-
-$\texttt{NumPy}$
-    
-    pip install numpy 
-
-$\texttt{SciPy}$
-    
-    pip install scipy
-
-$\texttt{Numba}$
-    
-    pip install numba
-
-
-Download and install the gs_solver.py and/or the simulate.py directly from GitHub
-
-    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py
-
-    pip install git+https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py
-
-
-
-
