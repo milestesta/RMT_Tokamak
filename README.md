@@ -63,11 +63,9 @@ xt = simulate(model,x0,v0,dt,tsteps) # runs simulation
 
 ## Plot and Animation Examples
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Constant%20Psi%20contours%20(presentation).png width="500">
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/Constant%20Psi%20contours%20(presentation).png width="500">
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Triangulation%20and%20Elongation%20(from%20presentation).png width="500">
-
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/Example%20Plots/Particle%20Motion%20Simulation%20GIF.gif width="500">
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/Particle%20Motion%20Simulation%20GIF.gif width="500">
 
 ## Installation
 Necessary packages
