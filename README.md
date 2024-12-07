@@ -37,19 +37,28 @@ Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a
 
 ## Common Usage
 
-A more detailed version of this is shown within [`example.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example.py).
+A more detailed version of this is shown within [`example.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example.py) and [`example_animation.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example_animation.py).
 
-The `RMT_Tokamak` class is contained within the [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py) file.  The main usage of this code is to compute our poloidal magnetic flux $\psi$.  A quick example of this on a $500\times500$ grid is
+The `RMT_Tokamak` class is contained within [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py) and the `simulate` function is (unsurprisingly) contained within [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py).  The main usage of this code is to compute our poloidal magnetic flux $\psi$ and to simulate a particle within that field.  A quick example of this on a $500\times500$ grid is
 
 ```python
 import numpy as np
 import gs_solver as gs
+from simulate import simulate
 
 N_R = 500 # number of points along r
 N_Z = 500 # number of points along z
 
 model = gs.RRT_Tokamak(Rdim=N_R,Zdim=N_Z) # initializes class
 psi = model.compute_psi() # computes psi
+
+# Establishes simulation parameters
+x0 = [0.0,0.0,1.01] # initial position
+v0 = [5.0,0.01,0.00] # initial velocity
+dt = 0.005 # length of time per timestep
+tsteps = 5000 # number of timesteps
+
+xt = simulate(model,x0,v0,dt,tsteps) # runs simulation
 ```
 
 ## Plot and Animation Examples
