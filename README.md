@@ -42,7 +42,6 @@ A more detailed version of this is shown within [`example.py`](https://github.co
 The `RMT_Tokamak` class is contained within [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py) and the `simulate` function is (unsurprisingly) contained within [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py).  The main usage of this code is to compute our poloidal magnetic flux $\psi$ and to simulate a particle within that field.  A quick example of this on a $500\times500$ grid is
 
 ```python
-import numpy as np
 import gs_solver as gs
 from simulate import simulate
 
