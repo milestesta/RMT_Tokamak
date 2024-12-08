@@ -1,5 +1,5 @@
 # RMT_Tokamak
-Welcome to the RMT Tokamak Code, by Kieran McDonald, Joe Roll, and Miles Testa. 
+Welcome to the RMT Tokamak Code, by Joe Roll, Kieran McDonald, and Miles Testa. 
 
 The most recent version of the code is in the "development" directory, and contains the newer features (Running Solov'ev Solutions, as well as Finite Differences verification). The Finite Differences code is buggy and still under review. The main directory contains a stable build that can only be used for Miller Geometry. 
 
@@ -34,6 +34,29 @@ For more details on the theory, see the attached papers, as well as the [plasma_
 Using the LCFS and $\psi$, we find the magnetic field at each point and use this to simulate the motion of a particle in the tokamak. As we assume no equilibrium toroidal fluid flow, the electric field is assumed to be zero (due to the Ideal MHD Ohm's law), and the motion is merely due to magnetic fields.  
 
 Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a factor of about 50. 
+
+## Available functions
+
+Within this repository, there are two main .py files which will be useful to the user.  They are listed here with their "public" functions.
+
+[`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py)
+- `RMT_Tokamak` class
+    - `miller_surface(a,b,c)`
+        - Returns the Miller surface LCFS defined by the  $a$, $b$, and $c$ parameters.
+    - `compute_psi()`
+        - Returns the poloidal magnetic flux $\psi$ on a discretized cross-section of the tokamak $(Z,R)$.
+    - `compute_B(psi_grid)`
+        - Returns the magnetic field given the poloidal magnetic flux from `compute_psi()`.
+    - `cyl2xyz(pos_cyl)`
+        - Inputs a position in cylindrical coordinates $[\phi,z,r]$ and returns the position in rectangular coordinates $[x,y,z]$.
+- `psi_output(fname)`
+    - Outputs $\psi$ data to $\texttt{./fname}$ in a standardized format.
+ 
+[`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py)
+- `simulate(model,x0,v0,dt,tsteps)`
+    - Simulates a plasma particle in the tokamak given the class within [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py), the initial position and velocity, the length per time step, and the number of timesteps.
+
+Additional, but still in testing, functionality can be found within the [development](https://github.com/milestesta/RMT_Tokamak/tree/main/development) directory.
 
 ## Common Usage
 
