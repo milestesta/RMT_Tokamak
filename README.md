@@ -1,5 +1,5 @@
 # RMT_Tokamak
-Welcome to the RMT Tokamak Code, by Joe Roll, Kieran McDonald, and Miles Testa. 
+Welcome to the RMT Tokamak Code by Joe Roll, Kieran McDonald, and Miles Testa. 
 
 The most recent version of the code is in the "development" directory, and contains the newer features (Running Solov'ev Solutions, as well as Finite Differences verification). The Finite Differences code is buggy and still under review. The main directory contains a stable build that can only be used for Miller Geometry. 
 
@@ -11,7 +11,7 @@ $$\nabla^* \psi = 0 \text{ for points outside of the LCFS.}$$
 
 where $j_{\phi}$ is the toroidal current.  Note that we apply the same normalization for the field, current, and flux as in Xu, Fitzpatrick. 
 
-We enforce the Dirichlet boundary condition that $\psi_{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
+We enforce the Dirichlet boundary condition that $\psi_\text{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
 
 The user can implement a Solov'ev-type solution using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the following form is implemented (https://doi.org/10.1063/1.872666):
 
@@ -25,7 +25,7 @@ $$\epsilon = \frac{a}{R_o}: \text{ The inverse aspect ratio of the tokamak, for 
 $$\delta: \text{ triangularity of the LCFS, must be between 0 and 1.}$$
 $$\kappa: \text{ The elongation of the LCFS.}$$ 
 
-This parameterization is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu and Waltz in the lat 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1063/1.872666) 
+This parameterization is known as the "Miller Geometry", and was first introduced in the paper "Noncircular, finite aspect ratio, local equilibrium model" by Miller, Chu, Greene, Lin-Liu, and Waltz in the late 90s. As this paper is behind a pay-wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1063/1.872666) 
 
 The toroidal current chosen is specified via physical intuition from transport codes/experiments. For the Solov'ev, the current is chosen as it is an exact solution to the GS equation. For the miller, a physically reasonable choice is specified, though the user is welcome to implement their own currents as guided by results from their own transport simulations/experiments. 
 
@@ -33,16 +33,16 @@ For more details on the theory, see the attached papers, as well as the [plasma_
 
 Using the LCFS and $\psi$, we find the magnetic field at each point and use this to simulate the motion of a particle in the tokamak. As we assume no equilibrium toroidal fluid flow, the electric field is assumed to be zero (due to the Ideal MHD Ohm's law), and the motion is merely due to magnetic fields.  
 
-Our implementation utilizes $\texttt{Numba}$ to reduce the computation time by a factor of about 50. 
+Our implementation utilizes [Numba](https://numba.pydata.org/numba-doc/dev/index.html) to reduce the computation time by a factor of about 50. 
 
 ## Available functions
 
-Within this repository, there are two main .py files which will be useful to the user.  They are listed here with their "public" functions.
+Within this repository, there are two primary files that will be useful to the user.  They are listed here with their "public" functions.
 
 [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py)
 - `RMT_Tokamak` class
     - `miller_surface(a,b,c)`
-        - Returns the Miller surface LCFS defined by the  $a$, $b$, and $c$ parameters.
+        - Returns the Miller surface last closed flux surface defined by the  $a$, $b$, and $c$ parameters.
     - `compute_psi()`
         - Returns the poloidal magnetic flux $\psi$ on a discretized cross-section of the tokamak $(Z,R)$.
     - `compute_B(psi_grid)`
@@ -50,13 +50,13 @@ Within this repository, there are two main .py files which will be useful to the
     - `cyl2xyz(pos_cyl)`
         - Inputs a position in cylindrical coordinates $[\phi,z,r]$ and returns the position in rectangular coordinates $[x,y,z]$.
 - `psi_output(fname)`
-    - Outputs $\psi$ data to $\texttt{./fname}$ in a standardized format.
+    - Outputs $\psi$ data to ./fname in a standardized format.
  
 [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py)
 - `simulate(model,x0,v0,dt,tsteps)`
     - Simulates a plasma particle in the tokamak given the class within [`gs_solver.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/gs_solver.py), the initial position and velocity, the length per time step, and the number of timesteps.
 
-Additional, but still in testing, functionality can be found within the [development](https://github.com/milestesta/RMT_Tokamak/tree/main/development) directory.
+Additional functionality, which is still in testing, can be found within the [development](https://github.com/milestesta/RMT_Tokamak/tree/main/development) directory.
 
 ## Common Usage
 
@@ -75,8 +75,8 @@ model = gs.RRT_Tokamak(Rdim=N_R,Zdim=N_Z) # initializes class
 psi = model.compute_psi() # computes psi
 
 # Establishes simulation parameters
-x0 = [ 0.0 , 0.0  , 1.01 ] # initial position [ phi [rad] , z [m] , r [m] ]
-v0 = [ 5.0 , 0.01 , 0.00 ] # initial velocity
+x0 = [ 0.00 , 0.00 , 1.01 ] # initial position [ phi [rad] , z [m] , r [m] ]
+v0 = [ 5.00 , 0.01 , 0.00 ] # initial velocity
 dt = 0.005 # time per step
 tsteps = 5000 # number of timesteps
 
@@ -99,7 +99,7 @@ Resultant magnetic field
 
 <img src=https://github.com/milestesta/RMT_Tokamak/blob/main/example_plots/psi_with_B.png width="600">
 
-Simulation:
+Simulation $[\phi,z,r]$:
 - Red particle:
     - initial position = $[0.00,0.00,1.01]$
     - initial velocity = $[5.00,0.01,0.00]$
