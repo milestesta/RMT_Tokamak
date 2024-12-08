@@ -66,7 +66,7 @@ We can now show some plots which our code can produce.  For explicit code exampl
 
 Elongation = 1.00 and Triangularity = 1.00
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/psi_contours.png width="500">
+<img src=https://github.com/milestesta/RMT_Tokamak/blob/main/example_plots/psi_elo1_tri1.png width="600">
 
 Elongation = 1.20 and Triangularity = 0.75
 
