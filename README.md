@@ -62,7 +62,25 @@ xt = simulate(model,x0,v0,dt,tsteps) # runs simulation [ phi [rad] , z [m] , r [
 
 ## Plot and Animation Examples
 
+We can now show some plots which our code can produce.  For explicit code examples of how to create these figures and simulations, specifically what we did within `matplotlib.pyplot` and `mpl_toolkits.mplot3d`, please refer to [`example.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example.py) and [`example_animation.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/example_files/example_animation.py).  Note that all figures below are calculated on a $500\times500$ grid.  For a more detailed exploration of the elongation/triangularity parameter space, view Slide 8 on [presentation.pptx](https://github.com/milestesta/RMT_Tokamak/blob/main/background_information/presentation.pptx).
+
+Elongation = 1.00 and Triangularity = 1.00
+
 <img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/psi_contours.png width="500">
+
+Elongation = 1.20 and Triangularity = 0.75
+
+<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/psi_contours.png width="500">
+
+Resultant magnetic field
+
+Simulation:
+- Red particle:
+    - initial position = $[0.00,0.00,1.01]$
+    - initial velocity = $[5.00,0.01,0.00]$
+- Blue particle:
+    - initial position = $[0.00,0.00,1.01]$
+    - initial velocity = $[5.00,0.03,0.01]$
 
 <img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/Particle%20Motion%20Simulation%20GIF.gif width="500">
 
