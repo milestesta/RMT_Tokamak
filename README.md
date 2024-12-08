@@ -13,7 +13,7 @@ where $j_{\phi}$ is the toroidal current.  Note that we apply the same normaliza
 
 We enforce the Dirichlet boundary condition that $\psi_\text{LCFS}$ have a certain value by adding on a homogenous solution to $\nabla^* \psi = 0$ in the form of a multipole expansion that represents the effect of distance poloidal field coils. The order of poles expanded to for this matching is a hyperparameter specified by the user, and requires some trial and error to avoid over-weighting the contribution from the coils over the plasma currents. The form of the multipole expansion comes from the paper "Toroidally Symmetric Polynomial Multipole Solutions of the Vector Laplace Equation" by Reusch and Neilson. As this paper is behind a pay wall, we do not attach it, and merely provide the DOI link: (https://doi.org/10.1016/0021-9991(86)90041-0). 
 
-The user can implement a Solov'ev-type solution using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the following form is implemented (https://doi.org/10.1063/1.872666):
+The user can implement a Solov'ev-type solution (only in the development version of gs_solver) using the "is_solovev" flag. If "is_solovev" is False, a LCFS of the following form is implemented (https://doi.org/10.1063/1.872666):
 
 $$R(\theta) = R_o\Big(1 + \epsilon \cos\big(\theta + \arcsin(\delta)\sin(\theta)\big)\Big)$$
 $$Z(\theta) = \epsilon \kappa \sin(\theta)$$
