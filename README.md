@@ -49,7 +49,7 @@ Within this repository, there are two primary files that will be useful to the u
         - Returns the magnetic field given the poloidal magnetic flux from `compute_psi()`.
     - `cyl2xyz(pos_cyl)`
         - Inputs a position in cylindrical coordinates $[\phi,z,r]$ and returns the position in rectangular coordinates $[x,y,z]$.
-- `psi_output(fname)`
+- `psi_output(grid,fname)`
     - Outputs $\psi$ data to ./fname in a standardized format.
  
 [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py)
