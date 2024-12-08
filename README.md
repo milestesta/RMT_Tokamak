@@ -93,7 +93,7 @@ Elongation = 1.00 and Triangularity = 1.00
 
 Elongation = 1.20 and Triangularity = 0.75
 
-<img src=https://github.com/milestesta/RRT_Tokamak/blob/main/example_plots/psi_contours.png width="500">
+<img src=https://github.com/milestesta/RMT_Tokamak/blob/main/example_plots/psi_elo120_tri075.png width="600">
 
 Resultant magnetic field
 
