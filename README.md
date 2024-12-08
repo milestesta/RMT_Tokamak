@@ -57,7 +57,7 @@ v0 = [ 5.0 , 0.01 , 0.00 ] # initial velocity
 dt = 0.005 # time per step
 tsteps = 5000 # number of timesteps
 
-xt = simulate(model,x0,v0,dt,tsteps) # runs simulation
+xt = simulate(model,x0,v0,dt,tsteps) # runs simulation [ phi [rad] , z [m] , r [m] ]
 ```
 
 ## Plot and Animation Examples
