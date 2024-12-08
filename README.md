@@ -107,8 +107,6 @@ Simulation $[\phi,z,r]$:
     - initial position = $[0.00,0.00,1.01]$
     - initial velocity = $[5.00,0.03,0.01]$
 
-<img src=https://github.com/milestesta/RMT_Tokamak/blob/main/example_plots/plasma_trajectory.gif width="1000">
-
 ## Installation
 Necessary packages
 
