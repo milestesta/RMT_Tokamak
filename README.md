@@ -97,6 +97,8 @@ Elongation = 1.20 and Triangularity = 0.75
 
 Resultant magnetic field
 
+<img src=https://github.com/milestesta/RMT_Tokamak/blob/main/example_plots/psi_with_B.png width="600">
+
 Simulation:
 - Red particle:
     - initial position = $[0.00,0.00,1.01]$
