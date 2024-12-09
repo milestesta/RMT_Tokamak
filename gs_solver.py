@@ -203,7 +203,7 @@ class RMT_Tokamak(object):
         Last closed flux surface for Miller geometry
 
         Parameters:
-            r (float): radius [m]
+            r (float): Potential spatial variable for a future general LCFS (Not currently used) [m]
             theta (float): angle [rad]
 
         Returns:
