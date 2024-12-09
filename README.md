@@ -1,7 +1,7 @@
 # RMT_Tokamak
 Welcome to the RMT Tokamak Code by Joe Roll, Kieran McDonald, and Miles Testa. 
 
-The most recent version of the code is in the "development" directory, and contains the newer features (Running Solov'ev Solutions, as well as Finite Differences verification). The Finite Differences code is buggy and still under review. The main directory contains a stable build that can only be used for Miller Geometry. 
+The most recent version of the code is in the [development](https://github.com/milestesta/RMT_Tokamak/tree/main/development) directory and contains some newer features (Running Solov'ev Solutions, as well as Finite Differences verification). The Finite Differences code is buggy and still under review. The main directory contains a stable build that can only be used for Miller Geometry. 
 
 ## Description
 This code implements the numerical Grad-Shafranov (GS) solver for finding the poloidal flux function ($\psi$) in an up-down symmetric tokamak in the (R, Z) plane. The method is a slight extension of that found in Xu and Fitzpatrick's "Vacuum Solution for Solov'ev's equilibrium configuration in tokamaks", hereafter referred to as (Xu, Fitzpatrick). Assuming that all plasma is confined to the region of the tokamak within the so-called "Last Closed Flux Surface" (hereafter referred to as the LCFS), which is the last closed contour of $\psi$, we are solving the system:
@@ -50,7 +50,7 @@ Within this repository, there are two primary files that will be useful to the u
     - `cyl2xyz(pos_cyl)`
         - Inputs a position in cylindrical coordinates $[\phi,z,r]$ and returns the position in rectangular coordinates $[x,y,z]$.
 - `psi_output(grid,fname)`
-    - Outputs $\psi$ data to ./fname in a standardized format.
+    - Outputs $\psi$ data in a standardized format.
  
 [`simulate.py`](https://github.com/milestesta/RMT_Tokamak/blob/main/simulate.py)
 - `simulate(model,x0,v0,dt,tsteps)`
