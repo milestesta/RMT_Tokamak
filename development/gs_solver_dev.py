@@ -244,7 +244,7 @@ class RMT_Tokamak(object):
         of the corresponding point on the LCFS. 
 
         Args:
-            r (float): radial distance from the magnetic axis (R = majR, Z = 0) to the lcfs point. Not generally used. 
+            r (float): Potential spatial variable for a future general LCFS (Not currently used) [m] 
             theta (float): Poloidal coordinate from the outboard mid-plane (R = majR + r, Z = 0, counterclockwise)
         Returns:
             R_lcfs (float): R coordinate of the lcfs point.
