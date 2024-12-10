@@ -34,7 +34,7 @@ n_time_steps = 120000 # Number of time steps to run the simulation over.
 
 ### Initialising the model:
 print('Starting Psi calculation',flush=True)
-model = gs.RRT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z, tri=triangularity, elo=elongation, sim_width=simulation_width,sim_height=simulation_height, N_poles = N_poles, just_plasma=False, is_solovev=False)
+model = gs.RMT_Tokamak(majR=R_0,Rdim=N_R,Zdim=N_Z, tri=triangularity, elo=elongation, sim_width=simulation_width,sim_height=simulation_height, N_poles = N_poles, just_plasma=False, is_solovev=False)
 psi = model.compute_psi()
 print('Psi calculation complete',flush=True)
 
