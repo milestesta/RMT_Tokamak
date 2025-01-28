@@ -481,7 +481,7 @@ class RMT_Tokamak(object):
             for row in range(grid.shape[0]):
                 for col in range(grid.shape[1]):
                     if col in [0,1]: # first two columns (forward derivative)
-                        der[row][col] = (-11/6*grid[row][col] + 3*grid[row][col] - 3/2*grid[row][col] + 1/3*grid[row][col])/dir_delta
+                        der[row][col] = (-11/6*grid[row][col] + 3*grid[row][col+1] - 3/2*grid[row][col+2] + 1/3*grid[row][col+3])/dir_delta
                     elif col in [grid.shape[1]-2,grid.shape[1]-1]: # last two columns (backward derivative)
                         der[row][col] = (-1/3*grid[row][col-3] + 3/2*grid[row][col-2] - 3*grid[row][col-1] + 11/6*grid[row][col])/dir_delta
                     else: # middle (full 5-pt-derivative)
